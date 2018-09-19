@@ -13,4 +13,6 @@
   
 Used Kotlin with Coroutines for creating background task to fetch images. Though experimental Coroutines in kotlin are light weight asynchronous task they are not threads and also multiple Coroutines can be created withing in single thread.
  
-
+## Trade-offs and Things can be done differently with extra time.
+  One big trade off is the actual image data is bieng loading while creating each item of listview using Glide library because of this each time user on scroll or rotate the app imageview will be loaded from backend. To overcome we can have extra Bitmap varible in ImageModel and that can be filled once and can be re-used.But with this solution if the application is loaded with thousands of images application cache high.
+  
