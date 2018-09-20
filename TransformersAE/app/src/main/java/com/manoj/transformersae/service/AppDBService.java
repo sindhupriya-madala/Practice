@@ -19,8 +19,7 @@ public abstract class AppDBService extends RoomDatabase {
 
     public static AppDBService getAppDatabase(Context context) {
         if (INSTANCE == null) {
-            INSTANCE =
-                    Room.databaseBuilder(context.getApplicationContext(), AppDBService.class, DATABASE_NAME)
+            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDBService.class, DATABASE_NAME)
                             .fallbackToDestructiveMigration().build();
         }
         return INSTANCE;

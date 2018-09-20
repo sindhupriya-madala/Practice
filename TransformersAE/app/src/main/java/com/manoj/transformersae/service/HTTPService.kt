@@ -24,7 +24,14 @@ class HTTPService private constructor() {
     private val CACHE_SIZE_IN_MB = (10 * 1024 * 1024).toLong()
 
     companion object {
-        val INSTANCE = HTTPService()
+        private var INSTANCE:HTTPService? = null
+
+        fun getInstance() : HTTPService {
+            if(INSTANCE == null) {
+                INSTANCE = HTTPService()
+            }
+            return INSTANCE as HTTPService
+        }
     }
 
     fun requestToken(context: Context) {

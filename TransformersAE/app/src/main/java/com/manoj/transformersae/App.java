@@ -29,7 +29,7 @@ public class App extends Application {
         instance = this;
         setToken(AppUtill.getSavedToken(this));
         if(mToken == null) {
-            HTTPService.Companion.getINSTANCE().requestToken(this);
+            HTTPService.Companion.getInstance().requestToken(this);
         }
     }
 

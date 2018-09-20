@@ -1,7 +1,5 @@
 package com.manoj.transformersae.ui.adapter
 
-import android.content.Intent
-import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -10,15 +8,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.manoj.transformersae.R
 import com.manoj.transformersae.model.BotModel
-import com.manoj.transformersae.ui.ItemDetailActivity
-import com.manoj.transformersae.ui.ItemDetailFragment
-import com.manoj.transformersae.ui.ItemListActivity
+import com.manoj.transformersae.ui.MainActivity
 import kotlinx.android.synthetic.main.item_list_content.view.*
 
 /**
  * Created by Manoj Vemuru on 2018-09-19.
  */
-class Adapter (val parentActivity: ItemListActivity, private val values: List<BotModel>, private val twoPane: Boolean)
+class Adapter (val parentActivity: MainActivity, private val values: List<BotModel>, private val twoPane: Boolean)
     : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
 //    private val onClickListener: View.OnClickListener

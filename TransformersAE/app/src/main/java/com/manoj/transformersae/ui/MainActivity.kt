@@ -1,5 +1,7 @@
 package com.manoj.transformersae.ui
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -12,6 +14,7 @@ import android.widget.TextView
 import com.manoj.transformersae.R
 
 import com.manoj.transformersae.dummy.DummyContent
+import com.manoj.transformersae.model.BotModel
 import com.manoj.transformersae.ui.adapter.Adapter
 import kotlinx.android.synthetic.main.activity_item_list.*
 import kotlinx.android.synthetic.main.item_list_content.view.*
@@ -25,13 +28,14 @@ import kotlinx.android.synthetic.main.item_list.*
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-class ItemListActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
      */
     private var twoPane: Boolean = false
+    private lateinit var mainViewModel: MainViewModel;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +55,18 @@ class ItemListActivity : AppCompatActivity() {
             // If this view is present, then the
             // activity should be in two-pane mode.
             twoPane = true
+        }
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        mainViewModel.init(applicationContext)
+
+        mainViewModel.listLiveData.observe(this, Observer { listen(it!!) })
+    }
+
+    private fun listen(list: List<BotModel>) {
+        if (list != null && list.isNotEmpty()) {
+            //TODO : DISPLAY EXISTING TRANSFORMERS LIST FRAGMENT
+        } else {
+            //TODO : SHOW ADD FRAGMENT TO ADD A NEW TRANSFORMER FRAGMENT
         }
     }
 }
