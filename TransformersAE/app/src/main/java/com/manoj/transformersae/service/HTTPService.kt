@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.manoj.transformersae.App
 import com.manoj.transformersae.model.BotModel
+import com.manoj.transformersae.model.Model.Companion.mCreateRequestSuccess
 import com.manoj.transformersae.service.AppDBService
 import com.manoj.transformersae.util.AppUtill
 import kotlinx.coroutines.experimental.launch
@@ -47,11 +48,18 @@ class HTTPService private constructor() {
 
     fun requestCreateTransformer(botModel: BotModel, id:String, appContext: Context) {
         launch {
-            val requestContent:String = getGson().toJson(botModel)
-            val requestBody:RequestBody = RequestBody.create(MediaType.parse("application/json"), requestContent)
-            val response = getClient().newCall(buildRequest(id, requestBody)).execute()
-            val responseBotModel:BotModel = getGson().fromJson(response.body().string().toString(), object : TypeToken<BotModel>(){}.type)
-            AppDBService.getAppDatabase(appContext).botDao().insertBot(responseBotModel)
+            try {
+                val requestContent:String = getGson().toJson(botModel)
+                val requestBody:RequestBody = RequestBody.create(MediaType.parse("application/json"), requestContent)
+                val httpResponse = getClient().newCall(buildRequest(id, requestBody)).execute()
+                val responseString = httpResponse.body().string()
+                val listType = object : TypeToken<BotModel>() {}.type
+                val responseBotModel:BotModel = getGson().fromJson(responseString, listType)
+                AppDBService.getAppDatabase(appContext).botDao().insertBot(responseBotModel)
+                mCreateRequestSuccess.postValue(true)
+            } catch (e : Exception) {
+                mCreateRequestSuccess.postValue(false)
+            }
         }
     }
 

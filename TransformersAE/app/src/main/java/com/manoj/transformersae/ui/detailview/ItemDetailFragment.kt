@@ -80,4 +80,18 @@ class ItemDetailFragment : Fragment() {
          */
         const val ARG_ITEM_ID = "item_id"
     }
+
+    fun getBotModel() : BotModel {
+        var botModel = BotModel()
+        botModel.strength = mCriteriaStrengthView.criteriaValue
+        botModel.intelligence = mCriteriaIntelligenceView.criteriaValue
+        botModel.speed = mCriteriaSpeedView.criteriaValue
+        botModel.endurance = mCriteriaEnduranceView.criteriaValue
+        botModel.rank = mCriteriaRankView.criteriaValue
+        botModel.courage = mCriteriaCourageView.criteriaValue
+        botModel.firepower = mCriteriaFirePowerView.criteriaValue
+        botModel.skill = mCriteriaSkillView.criteriaValue
+
+        return botModel
+    }
 }

@@ -1,7 +1,6 @@
 package com.manoj.transformersae.ui;
 
 import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 
@@ -20,7 +19,7 @@ public class MainViewModel extends ViewModel {
 
     public void init(Context context) {
         this.mContext = context;
-        Model.Companion.getInstance(context).getAllTransformers();
+        Model.Companion.getInstance(context).getAllTransformersDB();
     }
 
     public LiveData<List<BotModel>> getListLiveData() {

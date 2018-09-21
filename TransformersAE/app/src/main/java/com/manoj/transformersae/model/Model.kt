@@ -3,6 +3,7 @@ package com.manoj.transformersae.model
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
 import com.manoj.transformersae.service.AppDBService
+import com.vemuru.transformers.service.HTTPService
 import kotlinx.coroutines.experimental.launch
 
 /**
@@ -14,7 +15,7 @@ class Model private constructor(context: Context){
 
     companion object {
         private var INSTANCE:Model? = null
-
+        val mCreateRequestSuccess:MutableLiveData<Boolean>  = MutableLiveData()
         fun getInstance(context: Context):Model {
                 if (INSTANCE == null) {
                     INSTANCE = Model(context)
@@ -25,29 +26,32 @@ class Model private constructor(context: Context){
 
     private var DB: AppDBService = AppDBService.getAppDatabase(context)
 
-    fun insertTransformer(botModel: BotModel) {
+    fun insertTransformerDB(botModel: BotModel) {
         launch {
             DB.botDao().insertBot(botModel)
         }
     }
 
-    fun getAllTransformers() {
+    fun getAllTransformersDB() {
         launch {
             allBots.postValue(DB.botDao().getAll());
         }
 
     }
 
-    fun updateTransformer(botModel: BotModel) {
+    fun updateTransformerDB(botModel: BotModel) {
         launch {
             DB.botDao().updateBot(botModel)
         }
     }
 
-    fun deleteTransformer(botModel: BotModel) {
+    fun deleteTransformerDB(botModel: BotModel) {
         launch {
             DB.botDao().deleteBot(botModel)
         }
     }
 
+    fun saveTransformer(botModel: BotModel, token:String, context: Context) {
+        HTTPService.getInstance().requestCreateTransformer(botModel, token, context)
+    }
 }

@@ -1,13 +1,17 @@
 package com.manoj.transformersae.ui.detailview
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.widget.Button
+import android.widget.EditText
 import android.widget.RadioGroup
 import com.manoj.transformersae.R
+import com.manoj.transformersae.model.BotModel
 import com.manoj.transformersae.ui.MainActivity
 import kotlinx.android.synthetic.main.activity_item_detail.*
 
@@ -21,6 +25,9 @@ class ItemDetailActivity : AppCompatActivity() {
 
     private lateinit var mRadioButtonGroup:RadioGroup
     private lateinit var mDetailViewModel: DetailViewModel
+    private lateinit var mDetailFragment: ItemDetailFragment
+    private lateinit var mNameEditText:EditText
+    private lateinit var mSaveButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +54,7 @@ class ItemDetailActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
             // using a fragment transaction.
-            val fragment = ItemDetailFragment().apply {
+            mDetailFragment = ItemDetailFragment().apply {
                 arguments = Bundle().apply {
                     putString(ItemDetailFragment.ARG_ITEM_ID,
                             intent.getStringExtra(ItemDetailFragment.ARG_ITEM_ID))
@@ -55,14 +62,23 @@ class ItemDetailActivity : AppCompatActivity() {
             }
 
             supportFragmentManager.beginTransaction()
-                    .add(R.id.item_detail_container, fragment)
+                    .add(R.id.item_detail_container, mDetailFragment)
                     .commit()
         }
-
+        mNameEditText = findViewById(R.id.name_edit_text)
+        mSaveButton = findViewById(R.id.button_save)
         mRadioButtonGroup = findViewById(R.id.radio_group)
+
         mDetailViewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
         mDetailViewModel.init(applicationContext)
 
+        mSaveButton.setOnClickListener { _-> saveTransformer()}
+
+        mDetailViewModel.saveSuccess.observe(this, Observer {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
@@ -87,4 +103,13 @@ class ItemDetailActivity : AppCompatActivity() {
             else -> "A"
         }
     }
+
+    private fun saveTransformer() {
+        var botModel = mDetailFragment.getBotModel()
+        botModel.name = mNameEditText.text.toString()
+        botModel.team = getSelectedTeam()
+        mDetailViewModel.save(botModel)
+    }
+
+
 }

@@ -38,8 +38,7 @@ class MainActivity : AppCompatActivity() {
         toolbar.title = title
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            goToCreateView()
         }
 
         if (item_detail_container != null) {
@@ -53,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         mainViewModel.init(applicationContext)
 
         mainViewModel.listLiveData.observe(this, Observer { listen(it!!) })
+
     }
 
     private fun listen(list: List<BotModel>) {
@@ -60,9 +60,12 @@ class MainActivity : AppCompatActivity() {
             //TODO : DISPLAY EXISTING TRANSFORMERS LIST FRAGMENT
         } else {
             //TODO : SHOW ADD FRAGMENT TO ADD A NEW TRANSFORMER FRAGMENT
-
-            val intent = Intent(this, ItemDetailActivity::class.java)
-            startActivity(intent)
+            goToCreateView()
         }
+    }
+
+    private fun goToCreateView() {
+        val intent = Intent(this, ItemDetailActivity::class.java)
+        startActivity(intent)
     }
 }
