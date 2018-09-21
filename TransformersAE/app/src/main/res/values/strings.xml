@@ -1,4 +1,21 @@
 <resources>
     <string name="app_name">TransformersAE</string>
     <string name="title_item_detail">Item Detail</string>
+
+    <string name="criteria_strength">Strength</string>
+    <string name="criteria_intelligence">Intelligence</string>
+    <string name="criteria_speed">Speede</string>
+    <string name="criteria_endurance">Endurance</string>
+    <string name="criteria_rank">Rank</string>
+    <string name="criteria_courage">Courage</string>
+    <string name="criteria_firepower">Fire Power</string>
+    <string name="criteria_skill">Skill</string>
+    <string name="over_all_skill">Over All Skill</string>
+
+    <string name="enter_name_hint">Please enter Bot Name</string>
+
+    <string name="save">Save</string>
+
+    <string name="decepticon">Decepticon</string>
+    <string name="autobot">AutoBot</string>
 </resources>

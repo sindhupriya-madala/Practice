@@ -5,19 +5,12 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
 import android.support.design.widget.Snackbar
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import com.manoj.transformersae.R
 
-import com.manoj.transformersae.dummy.DummyContent
 import com.manoj.transformersae.model.BotModel
-import com.manoj.transformersae.ui.adapter.Adapter
+import com.manoj.transformersae.ui.detailview.ItemDetailActivity
 import kotlinx.android.synthetic.main.activity_item_list.*
-import kotlinx.android.synthetic.main.item_list_content.view.*
 import kotlinx.android.synthetic.main.item_list.*
 
 /**
@@ -67,6 +60,9 @@ class MainActivity : AppCompatActivity() {
             //TODO : DISPLAY EXISTING TRANSFORMERS LIST FRAGMENT
         } else {
             //TODO : SHOW ADD FRAGMENT TO ADD A NEW TRANSFORMER FRAGMENT
+
+            val intent = Intent(this, ItemDetailActivity::class.java)
+            startActivity(intent)
         }
     }
 }

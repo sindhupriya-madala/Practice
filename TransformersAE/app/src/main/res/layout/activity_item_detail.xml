@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".ui.ItemDetailActivity"
+    tools:context=".ui.detailview.ItemDetailActivity"
     tools:ignore="MergeRootFrame">
-
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
@@ -34,19 +34,61 @@
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/item_detail_container"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        <Button
+            android:id="@+id/button_save"
+            style="@style/save_button_style"/>
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/name_edit_text_layout"
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/criteria_seek_bar_margin"
+            android:layout_height="@dimen/bot_name_input_height">
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/name_edit_text"
+                android:layout_width="match_parent"
+                android:textColor="@color/colorPrimaryDark"
+                android:hint="@string/enter_name_hint"
+                android:layout_height="match_parent" />
+        </android.support.design.widget.TextInputLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="50dp">
+            <RadioGroup
+                android:id="@+id/radio_group"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:checkedButton="@id/radio_a"
+                android:layout_width="match_parent">
+                <RadioButton
+                    android:id="@+id/radio_a"
+                    style="@style/radio_button_style"
 
+                    android:text="@string/decepticon"/>
+                <RadioButton
+                    android:id="@+id/radio_d"
+                    style="@style/radio_button_style"
+                    android:text="@string/autobot"/>
+            </RadioGroup>
+        </LinearLayout>
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/item_detail_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+             />
+    </LinearLayout>
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical|start"
         android:layout_margin="@dimen/fab_margin"
+        android:visibility="gone"
         app:layout_anchor="@+id/item_detail_container"
         app:layout_anchorGravity="top|end"
         app:srcCompat="@android:drawable/stat_notify_chat" />

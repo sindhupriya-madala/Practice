@@ -1,11 +1,14 @@
-package com.manoj.transformersae.ui
+package com.manoj.transformersae.ui.detailview
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import android.widget.RadioGroup
 import com.manoj.transformersae.R
+import com.manoj.transformersae.ui.MainActivity
 import kotlinx.android.synthetic.main.activity_item_detail.*
 
 /**
@@ -15,6 +18,9 @@ import kotlinx.android.synthetic.main.activity_item_detail.*
  * in a [MainActivity].
  */
 class ItemDetailActivity : AppCompatActivity() {
+
+    private lateinit var mRadioButtonGroup:RadioGroup
+    private lateinit var mDetailViewModel: DetailViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +58,11 @@ class ItemDetailActivity : AppCompatActivity() {
                     .add(R.id.item_detail_container, fragment)
                     .commit()
         }
+
+        mRadioButtonGroup = findViewById(R.id.radio_group)
+        mDetailViewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
+        mDetailViewModel.init(applicationContext)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem) =
@@ -68,4 +79,12 @@ class ItemDetailActivity : AppCompatActivity() {
                 }
                 else -> super.onOptionsItemSelected(item)
             }
+
+    private fun getSelectedTeam() : String {
+        return when(mRadioButtonGroup.checkedRadioButtonId) {
+            R.id.radio_a -> "A"
+            R.id.radio_d -> "D"
+            else -> "A"
+        }
+    }
 }
