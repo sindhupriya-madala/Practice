@@ -6,12 +6,11 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.VisibleForTesting
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
-import android.view.Window
 import android.widget.Button
+import android.widget.TextView
 import com.manoj.transformersae.R
 import com.manoj.transformersae.model.BotModel
 import com.manoj.transformersae.model.Model
@@ -20,12 +19,10 @@ import com.manoj.transformersae.ui.list.FragmentList
 import com.manoj.transformersae.util.AppUtill
 import com.manoj.transformersae.util.AppUtill.VIEW_TYPE_KEY
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.activity_item_list.*
-import kotlinx.android.synthetic.main.item_list.*
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import android.widget.TextView
-import kotlinx.android.synthetic.main.dialog_layout.*
+import kotlinx.android.synthetic.main.activity_item_list.*
+import kotlinx.android.synthetic.main.item_list.*
 
 
 /**

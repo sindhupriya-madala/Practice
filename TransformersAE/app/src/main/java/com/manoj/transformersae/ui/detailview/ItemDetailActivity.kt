@@ -8,10 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioGroup
-import android.widget.Toast
+import android.widget.*
 import com.manoj.transformersae.R
 import com.manoj.transformersae.model.BotModel
 import com.manoj.transformersae.ui.MainActivity
@@ -30,6 +27,8 @@ import kotlinx.android.synthetic.main.activity_item_detail.*
  */
 class ItemDetailActivity : AppCompatActivity() {
     private lateinit var mRadioButtonGroup:RadioGroup
+    private lateinit var mRadioButtonA:RadioButton
+    private lateinit var mRadioButtonD:RadioButton
     private lateinit var mDetailViewModel: DetailViewModel
     private lateinit var mDetailFragment: ItemDetailFragment
     private lateinit var mNameEditText:EditText
@@ -76,7 +75,10 @@ class ItemDetailActivity : AppCompatActivity() {
 
         mNameEditText = findViewById(R.id.name_edit_text)
         mSaveButton = findViewById(R.id.button_save)
+
         mRadioButtonGroup = findViewById(R.id.radio_group)
+        mRadioButtonA = findViewById(R.id.radio_a)
+        mRadioButtonD = findViewById(R.id.radio_d)
 
         mDetailViewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
         mDetailViewModel.init(applicationContext)
@@ -120,14 +122,12 @@ class ItemDetailActivity : AppCompatActivity() {
                 mSaveButton.text = "Update"
                 when(mDetailViewModel.getBotModel().team) {
                     AppUtill.TEAM_A_KEY -> {
-                        radio_a.isSelected = true
-                        radio_d.isSelected = false
-                        mRadioButtonGroup.invalidate()
+                        mRadioButtonA.isSelected = true
+                        mRadioButtonD.isSelected = false
                     }
                     AppUtill.TEAM_D_KEY -> {
                         radio_a.isSelected = false
                         radio_d.isSelected = true
-                        mRadioButtonGroup.invalidate()
                     }
                 }
                 setupCreateViews(false)

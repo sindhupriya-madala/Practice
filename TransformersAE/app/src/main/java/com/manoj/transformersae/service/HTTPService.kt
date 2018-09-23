@@ -7,7 +7,6 @@ import com.google.gson.reflect.TypeToken
 import com.manoj.transformersae.App
 import com.manoj.transformersae.model.BotModel
 import com.manoj.transformersae.model.Model
-import com.manoj.transformersae.service.AppDBService
 import com.manoj.transformersae.util.AppUtill
 import kotlinx.coroutines.experimental.launch
 import okhttp3.*
