@@ -2,6 +2,7 @@ package com.manoj.transformersae.model
 
 import android.arch.lifecycle.MutableLiveData
 import android.content.Context
+import android.support.annotation.VisibleForTesting
 import com.manoj.transformersae.service.AppDBService
 import com.manoj.transformersae.util.AppUtill
 import com.vemuru.transformers.service.HTTPService
@@ -11,7 +12,11 @@ import kotlinx.coroutines.experimental.launch
 /**
  * Created by Manoj Vemuru on 2018-09-19.
  */
-class Model private constructor(context: Context){
+open class Model {
+
+    protected lateinit var DB: AppDBService
+
+    private lateinit var mContext: Context
     var mLiveData:MutableLiveData<List<BotModel>> = MutableLiveData()
 
     val mCreateRequestSuccess = PublishSubject.create<Boolean>()
@@ -27,7 +32,20 @@ class Model private constructor(context: Context){
         }
     }
 
-    private var DB: AppDBService = AppDBService.getAppDatabase(context)
+    private constructor(context: Context) {
+        isForTesting = false
+        mContext = context
+        DB = AppDBService.getAppDatabase(mContext)
+    }
+
+    @VisibleForTesting
+    private var isForTesting:Boolean = false
+    @VisibleForTesting
+    constructor(context: Context, boolean: Boolean) {
+        isForTesting = boolean
+        mContext = context
+        DB = AppDBService.getAppDatabase(mContext)
+    }
 
 
     fun getAllTransformersDB() {

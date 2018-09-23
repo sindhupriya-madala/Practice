@@ -3,6 +3,7 @@ package com.manoj.transformersae.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.VisibleForTesting;
 import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 
@@ -32,7 +33,8 @@ public class AppUtill {
     }
     private static String PREFERENCE_NAME = "PREF";
     private static String PREFERENCE_TOKEN = "TOKEN";
-
+    @VisibleForTesting
+    private static boolean mIsForTesting = false;
     public static void saveToken(Context context, String token) {
         SharedPreferences sharedPreferences = context.getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -57,4 +59,13 @@ public class AppUtill {
         if (centerCrop) builder.centerCrop();
         builder.into(target);
     }
+    @VisibleForTesting
+    public static void setTesting(boolean testing) {
+        mIsForTesting = testing;
+    }
+    @VisibleForTesting
+    public static boolean getIsTesting() {
+        return mIsForTesting;
+    }
+
 }

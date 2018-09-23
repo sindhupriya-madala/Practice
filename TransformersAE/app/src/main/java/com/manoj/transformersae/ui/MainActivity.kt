@@ -1,13 +1,17 @@
 package com.manoj.transformersae.ui
 
+import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.VisibleForTesting
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.view.Window
+import android.widget.Button
 import com.manoj.transformersae.R
 import com.manoj.transformersae.model.BotModel
 import com.manoj.transformersae.model.Model
@@ -20,6 +24,9 @@ import kotlinx.android.synthetic.main.activity_item_list.*
 import kotlinx.android.synthetic.main.item_list.*
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import android.widget.TextView
+import kotlinx.android.synthetic.main.dialog_layout.*
+
 
 /**
  * An activity representing a list of Pings. This activity
@@ -40,6 +47,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mFragmentList: FragmentList
     private lateinit var mDisposable:Disposable
     private lateinit var mwarDisposable:Disposable
+    private lateinit var mDialog: Dialog
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_item_list)
@@ -106,9 +114,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun goToCreateView() {
-        val intent = Intent(this, ItemDetailActivity::class.java)
-        intent.putExtra(VIEW_TYPE_KEY, AppUtill.TYPE.CREATE.value)
-        startActivity(intent)
+        if(!AppUtill.getIsTesting()) {
+            val intent = Intent(this, ItemDetailActivity::class.java)
+            intent.putExtra(VIEW_TYPE_KEY, AppUtill.TYPE.CREATE.value)
+            startActivity(intent)
+        }
     }
 
     private fun processResult(result: Boolean) {
@@ -147,11 +157,29 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showWarResult(result: String) {
-        val alertDailog: AlertDialog.Builder = AlertDialog.Builder(this)
-        alertDailog.setTitle("War Result")
-        alertDailog.setMessage(result)
-        alertDailog.create()
-        alertDailog.show()
+        mDialog = Dialog(this);
+        mDialog.setContentView(R.layout.dialog_layout)
+        val text = mDialog.findViewById(R.id.content) as TextView
+        text.text = result
+        val ok_button = mDialog.findViewById(R.id.ok_button) as Button
+        ok_button.setOnClickListener {
+            mDialog.dismiss()
+        }
+        mDialog.show()
 
+    }
+
+    @VisibleForTesting
+    fun  updateList(list: List<BotModel>) {
+        mFragmentList.updateAllItems(list)
+    }
+
+    @VisibleForTesting
+    fun getDialogView() : Dialog? {
+        if(mDialog != null) {
+           return mDialog
+        } else {
+            return null
+        }
     }
 }

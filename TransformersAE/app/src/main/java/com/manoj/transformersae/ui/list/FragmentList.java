@@ -24,6 +24,7 @@ import java.util.List;
 public class FragmentList extends Fragment {
 
     private Adapter mAdapter;
+    private RecyclerView mRecyclerView;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +35,7 @@ public class FragmentList extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.list_fragment, container, false);
-        RecyclerView mRecyclerView = rootView.findViewById(R.id.bot_list);
+        mRecyclerView = rootView.findViewById(R.id.bot_list);
         // Create the grid layout manager with 2 columns.
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         mRecyclerView.setLayoutManager(gridLayoutManager);
@@ -44,6 +45,7 @@ public class FragmentList extends Fragment {
     }
 
     public void updateAllItems(List<BotModel> botModelList) {
+        mRecyclerView.setVisibility(View.VISIBLE);
         mAdapter.updateList(botModelList);
     }
 }

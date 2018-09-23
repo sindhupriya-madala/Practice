@@ -43,6 +43,8 @@ public class App extends Application {
         } else {
             HTTPService.Companion.getInstance().requestToken(this);
         }
+
+        AppUtill.setTesting(false);
     }
 
     public String getToken() {

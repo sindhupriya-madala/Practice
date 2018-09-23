@@ -11,10 +11,16 @@ import org.json.JSONObject
  */
 class Utill {
     companion object {
-        fun parseResponseToList(response:String) : List<BotModel> {
+        fun parseTransformersResponseToList(response:String) : List<BotModel> {
             val jsonArray = JSONObject(response).getJSONArray("transformers")
             val listType = object : TypeToken<List<BotModel>>() {}.type
             return  getGson().fromJson(jsonArray.toString(), listType)
+        }
+
+        fun parseSingleTransformerResponse(response:String) : BotModel {
+            val jsonObj = JSONObject(response)
+            val transformerType = object : TypeToken<BotModel>() {}.type
+            return  getGson().fromJson(jsonObj.toString(), transformerType)
         }
 
         private fun getGson(): Gson {

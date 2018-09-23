@@ -1,21 +1,16 @@
-package com.manoj.transformersae;
+package com.manoj.transformersae.tests;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingRegistry;
 import android.support.test.espresso.IdlingResource;
-import android.support.test.espresso.base.IdlingResourceRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.test.runner.lifecycle.ActivityLifecycleMonitorRegistry;
-import android.support.test.runner.lifecycle.Stage;
 import android.view.View;
 
+import com.manoj.transformersae.R;
 import com.manoj.transformersae.TestUtill.ViewVisibilityIdlingResource;
 import com.manoj.transformersae.model.TestModel;
 import com.manoj.transformersae.ui.MainActivity;
-import com.manoj.transformersae.ui.list.FragmentList;
 import com.manoj.transformersae.util.AppUtill;
 
 import org.junit.After;
@@ -24,13 +19,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Collection;
-
-import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
 /**
  * Created by Manoj Vemuru on 2018-09-22.
  */
@@ -50,6 +45,7 @@ public class MainActivityItemsTest {
 
     @Before
     public void setup() {
+        AppUtill.setTesting(true);
         mTestModel = TestModel.getInstance(testRule.getActivity());
         mTestModel.deleteAllTransformers();
     }
@@ -57,21 +53,30 @@ public class MainActivityItemsTest {
     @After
     public void cleanup() {
         AppUtill.setTesting(false);
+        mTestModel.deleteAllTransformers();
     }
 
     @Test
-    public void testItems() {
-        mTestModel.loadUsers();
-        View recycler_view = ((FragmentList)testRule.getActivity().getCurrentFragment()).getRootView();
+    public void testSingleTransformerHubcap() {
+        mTestModel.loadMockDataSingleTransformer("HubcapTransformer.json", testRule.getActivity());
+        View recycler_view = testRule.getActivity().findViewById(R.id.bot_list);
         idlingResource = new ViewVisibilityIdlingResource(recycler_view, View.VISIBLE);
 
         IdlingRegistry.getInstance().register(idlingResource);
-        onView(withId(R.id.bot_list)).check(matches(isDisplayed()));
+        onView(withId(R.id.bot_list)).check(matches(hasDescendant(withText("HubcapTest"))));
         IdlingRegistry.getInstance().unregister(idlingResource);
     }
 
-    private void launchMainActivity() {
-        Intent intent = new Intent(testRule.getActivity(), MainActivity.class);
-        testRule.getActivity().startActivity(intent);
+    @Test
+    public void testTransformers() {
+        mTestModel.loadMockDataTransformers("Transformers.json", testRule.getActivity());
+        View recycler_view = testRule.getActivity().findViewById(R.id.bot_list);
+        idlingResource = new ViewVisibilityIdlingResource(recycler_view, View.VISIBLE);
+
+        IdlingRegistry.getInstance().register(idlingResource);
+        onView(withId(R.id.bot_list)).check(matches(hasDescendant(withText("HubcapTest"))));
+        onView(withId(R.id.bot_list)).check(matches(hasDescendant(withText("SoundwaveTest"))));
+        onView(withId(R.id.bot_list)).check(matches(hasDescendant(withText("BluestreakTest"))));
+        IdlingRegistry.getInstance().unregister(idlingResource);
     }
 }
