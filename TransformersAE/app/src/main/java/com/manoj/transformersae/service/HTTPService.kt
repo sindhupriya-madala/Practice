@@ -6,7 +6,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.manoj.transformersae.App
 import com.manoj.transformersae.model.BotModel
-import com.manoj.transformersae.model.Model.Companion.mCreateRequestSuccess
+import com.manoj.transformersae.model.Model
 import com.manoj.transformersae.service.AppDBService
 import com.manoj.transformersae.util.AppUtill
 import kotlinx.coroutines.experimental.launch
@@ -46,45 +46,88 @@ class HTTPService private constructor() {
         }
     }
 
-    fun requestCreateTransformer(botModel: BotModel, id:String, appContext: Context) {
-        launch {
-            try {
-                val requestContent:String = getGson().toJson(botModel)
-                val requestBody:RequestBody = RequestBody.create(MediaType.parse("application/json"), requestContent)
-                val httpResponse = getClient().newCall(buildRequest(id, requestBody)).execute()
+    fun requestCreateTransformer(botModel: BotModel, id:String, appContext: Context) : Boolean {
+        try {
+            val requestContent:String = getGson().toJson(botModel)
+            val requestBody:RequestBody = RequestBody.create(MediaType.parse("application/json"), requestContent)
+            val httpResponse = getClient().newCall(buildRequest(id, requestBody)).execute()
+            return if(httpResponse.isSuccessful) {
                 val responseString = httpResponse.body().string()
                 val listType = object : TypeToken<BotModel>() {}.type
                 val responseBotModel:BotModel = getGson().fromJson(responseString, listType)
-                AppDBService.getAppDatabase(appContext).botDao().insertBot(responseBotModel)
-                mCreateRequestSuccess.postValue(true)
-            } catch (e : Exception) {
-                mCreateRequestSuccess.postValue(false)
+                Model.getInstance(appContext).insertTransformerDB(responseBotModel)
+                true
+            } else {
+                false
             }
+
+        } catch (e : Exception) {
+            return false
         }
     }
 
-    fun requestListTransformers(appContext:Context, id:String) : List<BotModel> {
-        launch {
-            val request = Request.Builder().header("Authorization", "Bearer "+id)
+    fun requestListTransformers(appContext:Context, id:String) {
+        try {
+            val request = Request.Builder().header("Authorization", "Bearer " + id)
                     .header("Content-Type", "application/json")
                     .url(BASE_URL).get().build()
             val httpResponse = getClient().newCall(request).execute()
             val response = httpResponse.body().string()
-            val jsonArray = JSONObject(response).getJSONArray("transformers")
-            val listType = object : TypeToken<List<BotModel>>() {}.type
-            val list : List<BotModel> = getGson().fromJson(jsonArray.toString(), listType);
-            AppDBService.getAppDatabase(appContext.applicationContext).botDao().insertAllBot(list)
-
+            if (httpResponse.isSuccessful) {
+                val jsonArray = JSONObject(response).getJSONArray("transformers")
+                val listType = object : TypeToken<List<BotModel>>() {}.type
+                val list: List<BotModel> = getGson().fromJson(jsonArray.toString(), listType)
+                Model.getInstance(appContext).insertTransformersDB(list)
+            } else {
+                //TODO: show error
+            }
+        } catch (e:Exception) {
+            //TODO: show error
         }
-        return AppDBService.getAppDatabase(appContext).botDao().all
     }
 
-    fun requestUpdateTransformer(botModel: BotModel, id:String) {
+    fun requestUpdateTransformer(botModel: BotModel, id:String, context: Context) : Boolean {
+        try {
+            val requestContent:String = getGson().toJson(botModel)
+            val requestBody:RequestBody = RequestBody.create(MediaType.parse("application/json"), requestContent)
+            val request = Request.Builder().header("Authorization", "Bearer " + id)
+                    .header("Content-Type", "application/json")
+                    .url(BASE_URL).put(requestBody).build()
+            val httpResponse = getClient().newCall(request).execute()
+            return if(httpResponse.isSuccessful) {
+                val responseString = httpResponse.body().string()
+                val listType = object : TypeToken<BotModel>() {}.type
+                val responseBotModel:BotModel = getGson().fromJson(responseString, listType)
+                Model.getInstance(context).updateTransformerDB(responseBotModel)
+                true
+            } else {
+                false
+            }
 
+        } catch (e : Exception) {
+            return false
+        }
+        return false
     }
 
-    fun requestDeleteTransformer(botModel: BotModel, id:String) {
+    fun requestDeleteTransformer(botModel: BotModel, id:String, context: Context) :Boolean {
+        try {
 
+            val request = Request.Builder().header("Authorization", "Bearer " + id)
+                    .header("Content-Type", "application/json")
+                    .url(BASE_URL + "/"+botModel.id).delete().build()
+            val httpResponse = getClient().newCall(request).execute()
+            return if(httpResponse.isSuccessful) {
+                Model.getInstance(context).deleteTransformerDB(botModel)
+                true
+            } else {
+                false
+            }
+
+        } catch (e : Exception) {
+            return false
+        }
+        return false
     }
 
     private fun buildRequest(id : String, requestBody:RequestBody) : Request {

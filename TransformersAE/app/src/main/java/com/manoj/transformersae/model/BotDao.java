@@ -17,6 +17,9 @@ public interface BotDao {
     @Query("SELECT * FROM botmodel")
     List<BotModel> getAll();
 
+    @Query("SELECT * FROM botmodel where id = :id")
+    BotModel getBotById(String id);
+
     @Insert
     void insertBot(BotModel botModel);
 

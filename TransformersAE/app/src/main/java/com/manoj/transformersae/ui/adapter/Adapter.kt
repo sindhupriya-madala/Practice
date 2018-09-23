@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import com.manoj.transformersae.util.AppUtill.bindImage
 import com.manoj.transformersae.R
 import com.manoj.transformersae.model.BotModel
 import com.manoj.transformersae.ui.MainActivity
@@ -14,73 +15,82 @@ import kotlinx.android.synthetic.main.item_list_content.view.*
 /**
  * Created by Manoj Vemuru on 2018-09-19.
  */
-class Adapter (val parentActivity: MainActivity, private val values: List<BotModel>, private val twoPane: Boolean)
+class Adapter (private val parentActivity: MainActivity, values: List<BotModel>)
     : RecyclerView.Adapter<Adapter.ViewHolder>() {
 
-//    private val onClickListener: View.OnClickListener
+    private var listBots:ArrayList<BotModel> = ArrayList()
 
     init {
-        /*
-        onClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyContent.DummyItem
-            if (twoPane) {
-                val fragment = ItemDetailFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ItemDetailFragment.ARG_ITEM_ID, item.id)
-                    }
-                }
-                parentActivity.supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.item_detail_container, fragment)
-                        .commit()
-            } else {
-                val intent = Intent(v.context, ItemDetailActivity::class.java).apply {
-                    putExtra(ItemDetailFragment.ARG_ITEM_ID, item.id)
-                }
-                v.context.startActivity(intent)
-            }
-        }*/
+        listBots.addAll(values)
     }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_list_content, parent, false)
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = values[position]
-        holder.nameTextView.text = item.name
-        holder.strengthTextView.text = item.strength.toString()
-        holder.intelligenceTextView.text = item.intelligence.toString()
-        holder.speedTextView.text = item.speed.toString()
-        holder.enduranceTextView.text = item.endurance.toString()
-        holder.rankTextView.text = item.rank.toString()
-        holder.courageTextView.text = item.courage.toString()
-        holder.firepowerTextView.text = item.firepower.toString()
-        holder.skillTextView.text = item.skill.toString()
-        holder.teamTextView.text = item.team.toString()
-
-        with(holder.itemView) {
-            tag = item
-        }
+    fun updateList(list: List<BotModel>) {
+        listBots = ArrayList()
+        listBots.addAll(list)
+        notifyDataSetChanged()
     }
 
-    override fun getItemCount() = values.size
+    fun updateItem(botModel: BotModel) {
+        var index = -1
+        for (bot : BotModel in listBots) {
+            index++
+            if (bot.id == botModel.id) {
+                break
+            }
+        }
+        listBots.removeAt(index)
+        notifyDataSetChanged()
+    }
+
+    fun removeItem(botModel: BotModel) {
+        notifyDataSetChanged()
+    }
+
+    fun addItem(botModel: BotModel) {
+        listBots.add(botModel)
+        notifyDataSetChanged()
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val item = listBots[position]
+        holder.nameTextView.text = item.name
+        holder.strengthTextView.text = getCriteriaText(item)
+
+        bindImage(item.teamIcon, holder.iconImageView, false)
+        holder.itemView.setOnClickListener(parentActivity)
+
+        holder.iconEdit.setOnClickListener(parentActivity)
+        holder.iconDelete.setOnClickListener(parentActivity)
+        holder.iconEdit.setTag(R.id.item_list_layout, item.id)
+        holder.iconDelete.setTag(R.id.item_list_layout, item.id)
+        holder.itemView.setTag(R.id.item_list_layout, item.id)
+        holder.iconImageView.setTag(R.id.item_list_layout, item.id)
+    }
+
+    private fun getCriteriaText(botModel: BotModel) : String {
+        return parentActivity.getString(R.string.criteria_strength) + " "+ botModel.strength + ", " +
+                parentActivity.getString(R.string.criteria_intelligence) + " "+ botModel.intelligence + ", " +
+                parentActivity.getString(R.string.criteria_speed)+ " "+ botModel.speed + ", " +
+                parentActivity.getString(R.string.criteria_endurance)+ " "+ botModel.endurance + ", " +
+                parentActivity.getString(R.string.criteria_rank)+ " "+ botModel.rank + ", " +
+                parentActivity.getString(R.string.criteria_courage)+ " "+ botModel.courage + ", " +
+                parentActivity.getString(R.string.criteria_firepower)+ " "+ botModel.firepower + ", " +
+                parentActivity.getString(R.string.criteria_skill)+ " "+ botModel.skill + ", " +
+                parentActivity.getString(R.string.team)+ " "+ botModel.team
+    }
+
+    override fun getItemCount() = listBots.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val iconImageView:ImageView = view.image
         val iconEdit:ImageView = view.edit
         val iconDelete:ImageView = view.delete
         val nameTextView: TextView = view.name
-        val strengthTextView: TextView = view.strength
-        val intelligenceTextView: TextView = view.strength
-        val speedTextView: TextView = view.strength
-        val enduranceTextView: TextView = view.strength
-        val rankTextView: TextView = view.strength
-        val courageTextView: TextView = view.strength
-        val firepowerTextView: TextView = view.strength
-        val skillTextView: TextView = view.strength
-        val teamTextView: TextView = view.team
+        val strengthTextView: TextView = view.criteria
     }
 }

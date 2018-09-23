@@ -8,13 +8,15 @@
     <string name="criteria_endurance">Endurance</string>
     <string name="criteria_rank">Rank</string>
     <string name="criteria_courage">Courage</string>
-    <string name="criteria_firepower">Fire Power</string>
+    <string name="criteria_firepower">Fire-Power</string>
     <string name="criteria_skill">Skill</string>
     <string name="over_all_skill">Over All Skill</string>
+    <string name="team">Team</string>
 
     <string name="enter_name_hint">Please enter Bot Name</string>
 
     <string name="save">Save</string>
+    <string name="war">Start war</string>
 
     <string name="decepticon">Decepticon</string>
     <string name="autobot">AutoBot</string>

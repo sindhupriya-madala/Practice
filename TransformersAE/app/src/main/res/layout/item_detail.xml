@@ -7,42 +7,42 @@
     android:orientation="vertical"
     android:layout_margin="5dp"
     tools:context=".ui.detailview.ItemDetailFragment" >
-        <com.manoj.transformersae.ui.CriteriaComponent
+        <com.manoj.transformersae.ui.custom.CriteriaComponent
             android:id="@+id/strength"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-        <com.manoj.transformersae.ui.CriteriaComponent
+        <com.manoj.transformersae.ui.custom.CriteriaComponent
             android:id="@+id/intelligence"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-        <com.manoj.transformersae.ui.CriteriaComponent
+        <com.manoj.transformersae.ui.custom.CriteriaComponent
             android:id="@+id/speed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-        <com.manoj.transformersae.ui.CriteriaComponent
+        <com.manoj.transformersae.ui.custom.CriteriaComponent
             android:id="@+id/endurance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-        <com.manoj.transformersae.ui.CriteriaComponent
+        <com.manoj.transformersae.ui.custom.CriteriaComponent
             android:id="@+id/rank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-        <com.manoj.transformersae.ui.CriteriaComponent
+        <com.manoj.transformersae.ui.custom.CriteriaComponent
             android:id="@+id/courage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-        <com.manoj.transformersae.ui.CriteriaComponent
+        <com.manoj.transformersae.ui.custom.CriteriaComponent
             android:id="@+id/firepower"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
-        <com.manoj.transformersae.ui.CriteriaComponent
+        <com.manoj.transformersae.ui.custom.CriteriaComponent
             android:id="@+id/skill"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

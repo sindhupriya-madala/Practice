@@ -3,7 +3,17 @@ package com.manoj.transformersae;
 import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.DrawableRequestBuilder;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.manoj.transformersae.model.Model;
 import com.manoj.transformersae.util.AppUtill;
 import com.vemuru.transformers.service.HTTPService;
 
@@ -18,7 +28,6 @@ public class App extends Application {
     private static Context instance;
 
     private String mToken;
-
     public static Context getContext() {
         return instance;
     }
@@ -28,7 +37,10 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         setToken(AppUtill.getSavedToken(this));
-        if(mToken == null) {
+
+        if(mToken != null) {
+            Model.Companion.getInstance(this).getAllTransformersDB();
+        } else {
             HTTPService.Companion.getInstance().requestToken(this);
         }
     }

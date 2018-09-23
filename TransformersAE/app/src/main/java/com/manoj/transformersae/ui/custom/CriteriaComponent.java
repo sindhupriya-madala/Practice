@@ -1,4 +1,4 @@
-package com.manoj.transformersae.ui;
+package com.manoj.transformersae.ui.custom;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -63,10 +63,11 @@ public class CriteriaComponent extends CardView {
         });
     }
 
-    public void setValues(@NonNull String name, Integer value) {
+    public void setValues(@NonNull String name, Integer value, boolean hideSeekBar) {
         mCriteriaName.setText(name);
         mCriteriaValue.setText(value.toString());
         mCriteriaSeekBar.setProgress(value);
+        mCriteriaSeekBar.setVisibility(hideSeekBar ? View.INVISIBLE : View.VISIBLE);
     }
 
     public int getCriteriaValue() {

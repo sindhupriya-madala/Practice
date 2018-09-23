@@ -3,6 +3,8 @@ package com.manoj.transformersae.model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.google.gson.annotations.SerializedName;
@@ -11,7 +13,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Manoj Vemuru on 2018-09-19.
  */
 @Entity
-public class BotModel {
+public class BotModel implements Parcelable, Comparable<BotModel> {
     @NonNull
     @PrimaryKey
     private String id;
@@ -49,6 +51,53 @@ public class BotModel {
     @SerializedName("team_icon")
     @ColumnInfo
     private String teamIcon;
+
+    protected BotModel(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        strength = in.readInt();
+        intelligence = in.readInt();
+        speed = in.readInt();
+        endurance = in.readInt();
+        rank = in.readInt();
+        courage = in.readInt();
+        firepower = in.readInt();
+        skill = in.readInt();
+        team = in.readString();
+        teamIcon = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.id);
+        parcel.writeString(this.name);
+        parcel.writeInt(this.strength);
+        parcel.writeInt(this.intelligence);
+        parcel.writeInt(this.speed);
+        parcel.writeInt(this.endurance);
+        parcel.writeInt(this.rank);
+        parcel.writeInt(this.courage);
+        parcel.writeInt(this.firepower);
+        parcel.writeInt(this.skill);
+        parcel.writeString(this.team);
+        parcel.writeString(this.teamIcon);
+    }
+
+    public BotModel() {
+
+    }
+
+    public static final Creator<BotModel> CREATOR = new Creator<BotModel>() {
+        @Override
+        public BotModel createFromParcel(Parcel in) {
+            return new BotModel(in);
+        }
+
+        @Override
+        public BotModel[] newArray(int size) {
+            return new BotModel[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -144,5 +193,20 @@ public class BotModel {
 
     public void setTeamIcon(String teamIcon) {
         this.teamIcon = teamIcon;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public int getOverAllRating() {
+       return  (this.strength + this.intelligence + this.speed + this.endurance + this.firepower);
+    }
+
+
+    @Override
+    public int compareTo(@NonNull BotModel botModel) {
+        return botModel.getOverAllRating() - this.getOverAllRating();
     }
 }

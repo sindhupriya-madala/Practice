@@ -9,7 +9,6 @@
     tools:ignore="MergeRootFrame">
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/app_bar_height"
         android:fitsSystemWindows="true"
@@ -31,10 +30,19 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
+            <ImageView
+                android:id="@+id/fab"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                android:layout_margin="@dimen/fab_margin"
+                android:layout_gravity="center" />
+
         </android.support.design.widget.CollapsingToolbarLayout>
 
     </android.support.design.widget.AppBarLayout>
     <LinearLayout
+        android:id="@+id/holder"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:layout_marginTop="@dimen/fab_margin"
@@ -56,6 +64,7 @@
                 android:layout_height="match_parent" />
         </android.support.design.widget.TextInputLayout>
         <LinearLayout
+            android:id="@+id/create_layout"
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="50dp">
@@ -63,15 +72,14 @@
                 android:id="@+id/radio_group"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:checkedButton="@id/radio_a"
+                android:checkedButton="@id/radio_d"
                 android:layout_width="match_parent">
                 <RadioButton
-                    android:id="@+id/radio_a"
+                    android:id="@+id/radio_d"
                     style="@style/radio_button_style"
-
                     android:text="@string/decepticon"/>
                 <RadioButton
-                    android:id="@+id/radio_d"
+                    android:id="@+id/radio_a"
                     style="@style/radio_button_style"
                     android:text="@string/autobot"/>
             </RadioGroup>
@@ -82,15 +90,5 @@
             android:layout_height="match_parent"
              />
     </LinearLayout>
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical|start"
-        android:layout_margin="@dimen/fab_margin"
-        android:visibility="gone"
-        app:layout_anchor="@+id/item_detail_container"
-        app:layout_anchorGravity="top|end"
-        app:srcCompat="@android:drawable/stat_notify_chat" />
 
 </android.support.design.widget.CoordinatorLayout>

@@ -6,10 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.manoj.transformersae.R
-import com.manoj.transformersae.dummy.DummyContent
 import com.manoj.transformersae.model.BotModel
-import com.manoj.transformersae.ui.CriteriaComponent
-import kotlinx.android.synthetic.main.activity_item_detail.*
+import com.manoj.transformersae.ui.custom.CriteriaComponent
+import com.manoj.transformersae.util.AppUtill
+import com.manoj.transformersae.util.AppUtill.BOT_MODEL_KEY
+import com.manoj.transformersae.util.AppUtill.VIEW_TYPE_KEY
 
 /**
  * A fragment representing a single Item detail screen.
@@ -22,7 +23,6 @@ class ItemDetailFragment : Fragment() {
     /**
      * The dummy content this fragment is presenting.
      */
-    private var item: DummyContent.DummyItem? = null
     private lateinit var mCriteriaStrengthView: CriteriaComponent
     private lateinit var mCriteriaIntelligenceView: CriteriaComponent
     private lateinit var mCriteriaSpeedView: CriteriaComponent
@@ -34,16 +34,19 @@ class ItemDetailFragment : Fragment() {
 
     private lateinit var mBotModel: BotModel
 
+    private var mViewType:Int = 0;
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            if (it.containsKey(ARG_ITEM_ID)) {
-                // Load the dummy content specified by the fragment
-                // arguments. In a real-world scenario, use a Loader
-                // to load content from a content provider.
-                item = DummyContent.ITEM_MAP[it.getString(ARG_ITEM_ID)]
-                activity?.toolbar_layout?.title = item?.content
+
+            if (it.containsKey(VIEW_TYPE_KEY)) {
+                mViewType = it.getInt(VIEW_TYPE_KEY, 0)
+            }
+
+            if (it.containsKey(BOT_MODEL_KEY)) {
+                mBotModel = it.getParcelable(BOT_MODEL_KEY)
             }
         }
     }
@@ -61,28 +64,45 @@ class ItemDetailFragment : Fragment() {
         mCriteriaFirePowerView = rootView.findViewById(R.id.firepower)
         mCriteriaSkillView = rootView.findViewById(R.id.skill)
 
-        mCriteriaStrengthView.setValues(getString(R.string.criteria_strength), 1)
-        mCriteriaIntelligenceView.setValues(getString(R.string.criteria_intelligence), 1)
-        mCriteriaSpeedView.setValues(getString(R.string.criteria_speed), 4)
-        mCriteriaEnduranceView.setValues(getString(R.string.criteria_endurance), 6)
-        mCriteriaRankView.setValues(getString(R.string.criteria_rank), 9)
-        mCriteriaCourageView.setValues(getString(R.string.criteria_courage), 5)
-        mCriteriaFirePowerView.setValues(getString(R.string.criteria_firepower), 1)
-        mCriteriaSkillView.setValues(getString(R.string.criteria_skill), 3)
+        when(mViewType) {
+            AppUtill.TYPE.VIEW.value -> {
+                mCriteriaStrengthView.setValues(getString(R.string.criteria_strength), mBotModel.strength, true)
+                mCriteriaIntelligenceView.setValues(getString(R.string.criteria_intelligence), mBotModel.intelligence, true)
+                mCriteriaSpeedView.setValues(getString(R.string.criteria_speed), mBotModel.speed, true)
+                mCriteriaEnduranceView.setValues(getString(R.string.criteria_endurance), mBotModel.endurance, true)
+                mCriteriaRankView.setValues(getString(R.string.criteria_rank), mBotModel.rank, true)
+                mCriteriaCourageView.setValues(getString(R.string.criteria_courage), mBotModel.courage, true)
+                mCriteriaFirePowerView.setValues(getString(R.string.criteria_firepower), mBotModel.firepower, true)
+                mCriteriaSkillView.setValues(getString(R.string.criteria_skill), mBotModel.skill, true)
+            }
+
+            AppUtill.TYPE.UPDATE.value -> {
+                mCriteriaStrengthView.setValues(getString(R.string.criteria_strength), mBotModel.strength, false)
+                mCriteriaIntelligenceView.setValues(getString(R.string.criteria_intelligence), mBotModel.intelligence, false)
+                mCriteriaSpeedView.setValues(getString(R.string.criteria_speed), mBotModel.speed, false)
+                mCriteriaEnduranceView.setValues(getString(R.string.criteria_endurance), mBotModel.endurance, false)
+                mCriteriaRankView.setValues(getString(R.string.criteria_rank), mBotModel.rank, false)
+                mCriteriaCourageView.setValues(getString(R.string.criteria_courage), mBotModel.courage, false)
+                mCriteriaFirePowerView.setValues(getString(R.string.criteria_firepower), mBotModel.firepower, false)
+                mCriteriaSkillView.setValues(getString(R.string.criteria_skill), mBotModel.skill, false)
+            }
+
+            AppUtill.TYPE.CREATE.value -> {
+                mCriteriaStrengthView.setValues(getString(R.string.criteria_strength), 1, false)
+                mCriteriaIntelligenceView.setValues(getString(R.string.criteria_intelligence), 1, false)
+                mCriteriaSpeedView.setValues(getString(R.string.criteria_speed), 1, false)
+                mCriteriaEnduranceView.setValues(getString(R.string.criteria_endurance), 1, false)
+                mCriteriaRankView.setValues(getString(R.string.criteria_rank), 1, false)
+                mCriteriaCourageView.setValues(getString(R.string.criteria_courage), 1, false)
+                mCriteriaFirePowerView.setValues(getString(R.string.criteria_firepower), 1, false)
+                mCriteriaSkillView.setValues(getString(R.string.criteria_skill), 1, false)
+            }
+        }
 
         return rootView
     }
 
-    companion object {
-        /**
-         * The fragment argument representing the item ID that this fragment
-         * represents.
-         */
-        const val ARG_ITEM_ID = "item_id"
-    }
-
-    fun getBotModel() : BotModel {
-        var botModel = BotModel()
+    fun getBotModel(botModel: BotModel) : BotModel {
         botModel.strength = mCriteriaStrengthView.criteriaValue
         botModel.intelligence = mCriteriaIntelligenceView.criteriaValue
         botModel.speed = mCriteriaSpeedView.criteriaValue
