@@ -118,6 +118,18 @@ class ItemDetailActivity : AppCompatActivity() {
                 mNameEditText.setText(mDetailViewModel.getBotModel().name)
                 mNameEditText.hint = ""
                 mSaveButton.text = "Update"
+                when(mDetailViewModel.getBotModel().team) {
+                    AppUtill.TEAM_A_KEY -> {
+                        radio_a.isSelected = true
+                        radio_d.isSelected = false
+                        mRadioButtonGroup.invalidate()
+                    }
+                    AppUtill.TEAM_D_KEY -> {
+                        radio_a.isSelected = false
+                        radio_d.isSelected = true
+                        mRadioButtonGroup.invalidate()
+                    }
+                }
                 setupCreateViews(false)
             }
         }

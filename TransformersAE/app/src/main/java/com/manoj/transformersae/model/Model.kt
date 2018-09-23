@@ -110,7 +110,29 @@ open class Model {
 
             autoBotList.sort()
             deciptionBotList.sort()
-            mWarRequestResponse.onNext(processWar(autoBotList, deciptionBotList))
+            var countAutoBotWinner:Int = 0;
+            var countDecipticon:Int = 0;
+            for (autoBot :BotModel in autoBotList) {
+                if(autoBot.name.contains("Optimus Prime") || autoBot.name.contains("Predaking")) {
+                    countAutoBotWinner++
+                }
+            }
+            for (decipticon :BotModel in deciptionBotList) {
+                if(decipticon.name.contains("Optimus Prime") || decipticon.name.contains("Predaking")) {
+                    countDecipticon++
+                }
+            }
+
+            if((countAutoBotWinner +  countDecipticon) > 1){
+                mWarRequestResponse.onNext("all competitors destroyed")
+            } else if(countAutoBotWinner > 0) {
+                mWarRequestResponse.onNext("Winning Team (Autobots)")
+            } else if(countDecipticon > 0) {
+                mWarRequestResponse.onNext("Winning Team (Decipticons)")
+            } else {
+                mWarRequestResponse.onNext(processWar(autoBotList, deciptionBotList))
+            }
+
         }
     }
 
