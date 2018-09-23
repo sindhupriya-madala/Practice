@@ -5,6 +5,7 @@ import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+import android.support.annotation.VisibleForTesting;
 
 import java.util.List;
 
@@ -31,4 +32,8 @@ public interface BotDao {
 
     @Update
     void updateBot(BotModel botModel);
+
+    @VisibleForTesting
+    @Query("DELETE FROM botmodel")
+    void deleteAll();
 }
